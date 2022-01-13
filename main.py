@@ -1,16 +1,23 @@
-# This is a sample Python script.
+import tkinter as tk
+from revisionView import *
 
-# Press Mayús+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+class App(tk.Tk):
+    def __init__(self):
+        super().__init__()
+
+        self.title('Revisiones Oculares')
+
+        # create a view and place it on the root window
+        view = revisionView(self)
+        view.grid(row=0, column=0, padx=10, pady=10)
+
+        # create a controller
+        #controller = Controller(model, view)
+
+        # set the controller to view
+        #view.set_controller(controller)
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    app = App()
+    app.mainloop()
