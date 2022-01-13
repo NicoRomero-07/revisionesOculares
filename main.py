@@ -1,5 +1,8 @@
 import tkinter as tk
 from revisionView import *
+from revisionController import *
+from Modelo.tClient import *
+
 
 class App(tk.Tk):
     def __init__(self):
@@ -11,11 +14,12 @@ class App(tk.Tk):
         view = revisionView(self)
         view.grid(row=0, column=0, padx=10, pady=10)
 
+        model = tClient(1, "Nico", "Alvarez", 20)
         # create a controller
-        #controller = Controller(model, view)
+        controller = revisionController(model, view)
 
         # set the controller to view
-        #view.set_controller(controller)
+        view.set_controller(controller)
 
 
 if __name__ == '__main__':
