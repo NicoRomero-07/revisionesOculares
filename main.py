@@ -12,12 +12,14 @@ class App(tk.Tk):
         self.title('Revisiones Oculares')
 
         # create a view and place it on the root window
-        view = revisionView(self)
+        # view = revisionView(self)
+        view = principalView(self)
         view.grid(row=0, column=0, padx=10, pady=10)
 
         model = tClient(1, "Nico", "Alvarez", 20)
         # create a controller
-        controller = revisionController(model, view)
+        controller = principalController(model, view)
+        # controller = revisionController(model, view)
 
         # set the controller to view
         view.set_controller(controller)
