@@ -81,10 +81,10 @@ class principalView(ttk.Frame):
 
         # Create Headings
         self.datagrid.my_table.heading("#0", text="", anchor="center")
-        self.datagrid.my_table.heading("NIF", text="Id", anchor="center")
-        self.datagrid.my_table.heading("NOMBRE", text="Name", anchor="center")
-        self.datagrid.my_table.heading("APELLIDOS", text="Rank", anchor="center")
-        self.datagrid.my_table.heading("EDAD", text="States", anchor="center")
+        self.datagrid.my_table.heading("NIF", text="NIF", anchor="center")
+        self.datagrid.my_table.heading("NOMBRE", text="NOMBRE", anchor="center")
+        self.datagrid.my_table.heading("APELLIDOS", text="APELLIDOS", anchor="center")
+        self.datagrid.my_table.heading("EDAD", text="EDAD", anchor="center")
 
         self.update_refresh()
 
