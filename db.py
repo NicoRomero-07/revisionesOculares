@@ -9,6 +9,15 @@ class db:
         self.metadata = MetaData(self.engine)
         self.metadata.reflect()
 
+
     def execute(self, query):
         with self.engine.connect() as connection:
+            connection.execute(text(query))
+
+    def query(self, query):
+        with self.engine.connect() as connection:
             return connection.execute(text(query)).all()
+
+    def update(self, stmt):
+        conn = self.engine.connect()
+        conn.execute(stmt)
