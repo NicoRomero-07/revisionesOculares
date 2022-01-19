@@ -6,7 +6,7 @@ from tkcalendar import Calendar
 class revisionView(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
-
+        self.parent = parent
         # create widgets
         # label
         self.label = tk.Label(self, text='Cliente')
@@ -57,7 +57,8 @@ class revisionView(tk.Frame):
         # save button
         self.add_button = tk.Button(self, text='Añadir', command=self.add_button_clicked, height=3, width=10)
         self.add_button.grid(row=7, column=2, padx=20)
-        self.actualizar_button = tk.Button(self, text='Actualizar', command=self.actualizar_button_clicked, height=3, width=10)
+        self.actualizar_button = tk.Button(self, text='Actualizar', command=self.actualizar_button_clicked, height=3,
+                                           width=10)
         self.actualizar_button.grid(row=7, column=4, padx=20)
         self.borrar_button = tk.Button(self, text='Borrar', command=self.borrar_button_clicked, height=3, width=10)
         self.borrar_button.grid(row=7, column=3, padx=20)
@@ -170,9 +171,7 @@ class revisionView(tk.Frame):
         :return:
         """
         if self.controller:
-            self.controller.salir(self.ODEsfera_var.get(), self.ODCilindro_var.get(), self.ODAdicion_var.get(),
-                                  self.OIAgudeza_var, self.OIEsfera_var.get(), self.OICilindro_var.get(),
-                                  self.OIAdicion_var.get(), self.OIAgudeza_var)
+            self.controller.salir(self.parent)
 
     def show_error(self, message):
         """
