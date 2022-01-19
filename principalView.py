@@ -7,7 +7,7 @@ class principalView(ttk.Frame):
 
     def __init__(self, parent):
         super().__init__(parent)
-
+        self.parent = parent
         self.title = ttk.Label(self, text="Revisión Ocular")
         self.title.config(font=('Helvetica bold', 25))
         self.title.grid(row=0, column=1, padx=10, pady=10, columnspan=4)
@@ -81,24 +81,34 @@ class principalView(ttk.Frame):
 
         # Create Headings
         self.datagrid.my_table.heading("#0", text="", anchor="center")
-        self.datagrid.my_table.heading("NIF", text="Id", anchor="center")
-        self.datagrid.my_table.heading("NOMBRE", text="Name", anchor="center")
-        self.datagrid.my_table.heading("APELLIDOS", text="Rank", anchor="center")
-        self.datagrid.my_table.heading("EDAD", text="States", anchor="center")
-
+        self.datagrid.my_table.heading("NIF", text="NIF", anchor="center")
+        self.datagrid.my_table.heading("NOMBRE", text="NOMBRE", anchor="center")
+        self.datagrid.my_table.heading("APELLIDOS", text="APELLIDOS", anchor="center")
+        self.datagrid.my_table.heading("EDAD", text="EDAD", anchor="center")
+        # Event
+        self.datagrid.my_table.bind("<<TreeviewSelect>>", self.selection_changed)
         self.update_refresh()
 
         self.controller = None
 
     def update_refresh(self):
-        #url = 'mysql+pymysql://root:nicolaszhiliezhao@localhost:3306/mydb'
-        url = 'mysql://nicor:1234@localhost:3306/mydb'
+        # url = 'mysql+pymysql://root:nicolaszhiliezhao@localhost:3306/mydb'
+        url = 'mysql://root:1234@localhost:3306/mydb'
         mydb = db(url)
         query = "SELECT * FROM tclient"
-        rows = mydb.execute(query)
+        rows = mydb.query(query)
         self.update_datagrid(rows)
 
+    def selection_changed(self, x):
+        if self.controller:
+            if len(self.datagrid.my_table.selection()) > 0:
+                item = self.datagrid.my_table.selection()[0]
+                row = self.datagrid.my_table.item(item)['values']
+                self.controller.selection_changed(row)
+
     def update_datagrid(self, rows):
+        for i in self.datagrid.my_table.get_children():
+            self.datagrid.my_table.delete(i)
         for i in rows:
             self.datagrid.my_table.insert('', 'end', values=(i['NIF'], i['NOMBRE'], i['APELLIDOS'], i['EDAD']))
 
@@ -107,18 +117,19 @@ class principalView(ttk.Frame):
 
     def salir_button_clicked(self):
         if self.controller:
-            self.controller.salir()
+            self.controller.salir(self.parent)
 
     def limpiar_button_clicked(self):
         if self.controller:
-            self.controller.limpiar()
+            if len(self.datagrid.my_table.selection()) > 0:
+                self.controller.limpiar()
 
     def anyadir_button_clicked(self):
         try:
             if self.controller:
-                self.controller.anyadir(self.tNIF.get("1.0", "end"),
-                                        self.tNombre.get("1.0", "end"),
-                                        self.tApellidos.get("1.0", "end"),
+                self.controller.anyadir(self.tNIF.get("1.0", "end-1c"),
+                                        self.tNombre.get("1.0", "end-1c"),
+                                        self.tApellidos.get("1.0", "end-1c"),
                                         self.list.listEdad.get(self.list.listEdad.curselection()[0]))
         except ValueError as error:
             # show an error message
@@ -127,7 +138,7 @@ class principalView(ttk.Frame):
     def borrar_button_clicked(self):
         try:
             if self.controller:
-                self.controller.borrar(self.tNIF.get("1.0", "end"))
+                self.controller.borrar(self.tNIF.get("1.0", "end-1c"))
         except ValueError as error:
             # show an error message
             self.view.show_error(error)
@@ -135,19 +146,17 @@ class principalView(ttk.Frame):
     def revisiones_button_clicked(self):
         try:
             if self.controller:
-                self.controller.revisiones(self.tNIF.get("1.0", "end"),
-                                           self.tNombre.get("1.0", "end"),
-                                           self.tApellidos.get("1.0", "end"),
-                                           self.list.listEdad.get(self.list.listEdad.curselection()[0]))
+                self.controller.revisiones(self.tNIF.get("1.0", "end-1c"), self.parent)
         except ValueError as error:
             # show an error message
             self.view.show_error(error)
+
     def actualizar_button_clicked(self):
         try:
             if self.controller:
-                self.controller.actualizar(self.tNIF.get("1.0", "end"),
-                                           self.tNombre.get("1.0", "end"),
-                                           self.tApellidos.get("1.0", "end"),
+                self.controller.actualizar(self.tNIF.get("1.0", "end-1c"),
+                                           self.tNombre.get("1.0", "end-1c"),
+                                           self.tApellidos.get("1.0", "end-1c"),
                                            self.list.listEdad.get(self.list.listEdad.curselection()[0]))
         except ValueError as error:
             # show an error message
