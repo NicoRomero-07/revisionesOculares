@@ -91,7 +91,8 @@ class principalView(ttk.Frame):
         self.controller = None
 
     def update_refresh(self):
-        url = 'mysql+pymysql://root:nicolaszhiliezhao@localhost:3306/mydb'
+        #url = 'mysql+pymysql://root:nicolaszhiliezhao@localhost:3306/mydb'
+        url = 'mysql://nicor:1234@localhost:3306/mydb'
         mydb = db(url)
         query = "SELECT * FROM tclient"
         rows = mydb.execute(query)

@@ -5,7 +5,7 @@ class principalController:
     def __init__(self, model, view):
         self.model = model
         self.view = view
-        self.url = 'mysql+pymysql://root:nicolaszhiliezhao@localhost:3306/mydb'
+        self.url = 'mysql://nicor:1234@localhost:3306/mydb'
 
     def revisiones(self, nif, nombre, apellidos, edad):
         try:
