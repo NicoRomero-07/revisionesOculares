@@ -145,7 +145,7 @@ class principalView(ttk.Frame):
         try:
             if self.controller:
                 mydb = db()
-                query = "SELECT NIF FROM teye WHERE NIF ='"+self.tNIF.get("0.0", "end-1c")+"';"
+                query = "SELECT NIF FROM tclient WHERE NIF = '"+self.tNIF.get("0.0", "end-1c")+"';"
                 rows = mydb.query(query)
                 if len(rows) > 0:
                     self.controller.revisiones(self.tNIF.get("0.0", "end-1c"), self.parent)
