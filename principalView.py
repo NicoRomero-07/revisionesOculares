@@ -93,9 +93,7 @@ class principalView(ttk.Frame):
         self.controller = None
 
     def update_refresh(self):
-        # url = 'mysql+pymysql://root:nicolaszhiliezhao@localhost:3306/mydb'
-        url = 'mysql://root:1234@localhost:3306/mydb'
-        mydb = db(url)
+        mydb = db()
         query = "SELECT * FROM tclient"
         rows = mydb.query(query)
         self.update_datagrid(rows)
@@ -128,9 +126,9 @@ class principalView(ttk.Frame):
     def anyadir_button_clicked(self):
         try:
             if self.controller:
-                self.controller.anyadir(self.tNIF.get("1.0", "end-1c"),
-                                        self.tNombre.get("1.0", "end-1c"),
-                                        self.tApellidos.get("1.0", "end-1c"),
+                self.controller.anyadir(self.tNIF.get("0.0", "end-1c"),
+                                        self.tNombre.get("0.0", "end-1c"),
+                                        self.tApellidos.get("0.0", "end-1c"),
                                         self.list.listEdad.get(self.list.listEdad.curselection()[0]))
         except ValueError as error:
             # show an error message
@@ -139,7 +137,7 @@ class principalView(ttk.Frame):
     def borrar_button_clicked(self):
         try:
             if self.controller:
-                self.controller.borrar(self.tNIF.get("1.0", "end-1c"))
+                self.controller.borrar(self.tNIF.get("0.0", "end-1c"))
         except ValueError as error:
             # show an error message
             self.view.show_error(error)
@@ -147,7 +145,7 @@ class principalView(ttk.Frame):
     def revisiones_button_clicked(self):
         try:
             if self.controller:
-                self.controller.revisiones(self.tNIF.get("1.0", "end-1c"), self.parent)
+                self.controller.revisiones(self.tNIF.get("0.0", "end-1c"), self.parent)
         except ValueError as error:
             # show an error message
             self.view.show_error(error)
@@ -155,9 +153,9 @@ class principalView(ttk.Frame):
     def actualizar_button_clicked(self):
         try:
             if self.controller:
-                self.controller.actualizar(self.tNIF.get("1.0", "end-1c"),
-                                           self.tNombre.get("1.0", "end-1c"),
-                                           self.tApellidos.get("1.0", "end-1c"),
+                self.controller.actualizar(self.tNIF.get("0.0", "end-1c"),
+                                           self.tNombre.get("0.0", "end-1c"),
+                                           self.tApellidos.get("0.0", "end-1c"),
                                            self.list.listEdad.get(self.list.listEdad.curselection()[0]))
         except ValueError as error:
             # show an error message

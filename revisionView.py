@@ -5,9 +5,10 @@ from db import *
 
 
 class revisionView(tk.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, nif):
         super().__init__(parent)
         self.parent = parent
+        self.nif = nif
         # create widgets
         # label
         self.label = tk.Label(self, text='Cliente')
@@ -133,10 +134,8 @@ class revisionView(tk.Frame):
                 self.controller.selection_changed(row)
 
     def update_refresh(self):
-        # url = 'mysql+pymysql://root:nicolaszhiliezhao@localhost:3306/mydb'
-        url = 'mysql://root:1234@localhost:3306/mydb'
-        mydb = db(url)
-        query = "SELECT * FROM teye"
+        mydb = db()
+        query = "SELECT * FROM teye WHERE NIF = '"+self.nif+"';"
         rows = mydb.query(query)
         self.update_datagrid(rows)
 
@@ -161,7 +160,7 @@ class revisionView(tk.Frame):
         :return:
         """
         if self.controller:
-            self.controller.add(self.controller.model.NIF , self.cal.get_date(), self.ODEsfera_var.get(), self.ODCilindro_var.get(), self.ODAdicion_var.get(),
+            self.controller.add(self.nif, self.cal.selection_get(), self.ODEsfera_var.get(), self.ODCilindro_var.get(), self.ODAdicion_var.get(),
                                 self.OIAgudeza_var.get(), self.OIEsfera_var.get(), self.OICilindro_var.get(),
                                 self.OIAdicion_var.get(), self.OIAgudeza_var.get())
 
@@ -171,9 +170,9 @@ class revisionView(tk.Frame):
         :return:
         """
         if self.controller:
-            self.controller.actualizar(self.ODEsfera_var.get(), self.ODCilindro_var.get(), self.ODAdicion_var.get(),
-                                       self.OIAgudeza_var, self.OIEsfera_var.get(), self.OICilindro_var.get(),
-                                       self.OIAdicion_var.get(), self.OIAgudeza_var)
+            self.controller.actualizar(self.cal.selection_get(), self.ODEsfera_var.get(), self.ODCilindro_var.get(), self.ODAdicion_var.get(),
+                                       self.OIAgudeza_var.get(), self.OIEsfera_var.get(), self.OICilindro_var.get(),
+                                       self.OIAdicion_var.get(), self.OIAgudeza_var.get())
 
     def borrar_button_clicked(self):
         """
@@ -181,9 +180,7 @@ class revisionView(tk.Frame):
         :return:
         """
         if self.controller:
-            self.controller.borrar(self.ODEsfera_var.get(), self.ODCilindro_var.get(), self.ODAdicion_var.get(),
-                                   self.OIAgudeza_var, self.OIEsfera_var.get(), self.OICilindro_var.get(),
-                                   self.OIAdicion_var.get(), self.OIAgudeza_var)
+            self.controller.borrar()
 
     def limpiar_button_clicked(self):
         """
@@ -191,9 +188,7 @@ class revisionView(tk.Frame):
         :return:
         """
         if self.controller:
-            self.controller.limpiar(self.ODEsfera_var.get(), self.ODCilindro_var.get(), self.ODAdicion_var.get(),
-                                    self.OIAgudeza_var, self.OIEsfera_var.get(), self.OICilindro_var.get(),
-                                    self.OIAdicion_var.get(), self.OIAgudeza_var)
+            self.controller.limpiar()
 
     def salir_button_clicked(self):
         """

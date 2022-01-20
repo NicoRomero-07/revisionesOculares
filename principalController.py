@@ -10,14 +10,13 @@ class principalController:
     def __init__(self, model, view):
         self.model = model
         self.view = view
-        self.url = 'mysql://root:1234@localhost:3306/mydb'
 
     def revisiones(self, nif, app):
         try:
             if nif != "":
                 app.title('Revisiones Oculares')
 
-                view = revisionView(app)
+                view = revisionView(app, nif)
                 view.grid(row=0, column=0, padx=10, pady=10)
 
                 model = tClient(nif, "", "", null)
@@ -31,12 +30,11 @@ class principalController:
 
     def anyadir(self, nif, nombre, apellidos, edad):
         try:
-            query = "INSERT INTO tclient VALUES('" + nif + "', '" + nombre + "', '" + apellidos + "', " + str(
-                edad) + ");"
-            mydb = db(self.url)
+            query = "INSERT INTO tclient VALUES('" + nif + "', '" + nombre + "', '" + apellidos + "', " + str(edad) + ");"
+            mydb = db()
             mydb.execute(query)
             self.view.update_refresh()
-            print("inserted")
+            self.limpiar()
         except ValueError as error:
             # show an error message
             self.view.show_error(error)
@@ -56,10 +54,10 @@ class principalController:
         try:
             query = "UPDATE tclient SET NIF='" + nif + "', NOMBRE='" + nombre + "', APELLIDOS='" + apellidos + "', EDAD=" + str(
                 edad) + " WHERE NIF = '" + nif + "';"
-            mydb = db(self.url)
+            mydb = db()
             mydb.execute(query)
             self.view.update_refresh()
-            print("updated")
+            self.limpiar()
         except ValueError as error:
             # show an error message
             self.view.show_error(error)
@@ -67,21 +65,21 @@ class principalController:
     def borrar(self, nif):
         try:
             query = "DELETE FROM `mydb`.`tclient` WHERE (`NIF` = '" + str(nif) + "');"
-            mydb = db(self.url)
+            mydb = db()
             mydb.execute(query)
             self.view.update_refresh()
-            print("deleted")
+            self.limpiar()
         except ValueError as error:
             # show an error message
             self.view.show_error(error)
 
     def limpiar(self):
         try:
-
-            self.view.datagrid.my_table.selection_remove(self.view.datagrid.my_table.selection()[0])
-            self.view.tNIF.delete("1.0", "end")
-            self.view.tNombre.delete("1.0", "end")
-            self.view.tApellidos.delete("1.0", "end")
+            if len(self.view.datagrid.my_table.selection()) > 0:
+                self.view.datagrid.my_table.selection_remove(self.view.datagrid.my_table.selection()[0])
+            self.view.tNIF.delete(0.0, "end")
+            self.view.tNombre.delete(0.0, "end")
+            self.view.tApellidos.delete(0.0, "end")
             self.view.list.listEdad.selection_clear(0, "end")
         except ValueError as error:
             # show an error message
