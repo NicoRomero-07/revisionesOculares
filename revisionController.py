@@ -7,12 +7,14 @@ import principalController as pC
 import principalView as pV
 
 from Modelo.tClient import tClient
+from db import db
 
 
 class revisionController:
     def __init__(self, model, view):
         self.model = model
         self.view = view
+        self.url = 'mysql://root:1234@localhost:3306/mydb'
 
     def selection_changed(self, row):
         formato = format(row[2])
@@ -37,16 +39,22 @@ class revisionController:
         self.view.OIAgudeza_entry.delete(0, 'end')
         self.view.OIAgudeza_entry.insert(0, row[10])
 
+    def selectMaxId(self):
+        query = "SELECT MAX(ID) FROM teye"
+        mydb = db(self.url)
+        rows = mydb.query(query)
+        return rows[0]['MAX(ID)']
 
-    def add(self, OD_Esfera, OD_Cilindro, OD_Adicion, OD_Agudeza, OI_Esfera, OI_Cilindro, OI_Adicion, OI_Agudeza):
+    def add(self, nif, fecha, OD_Esfera, OD_Cilindro, OD_Adicion, OD_Agudeza, OI_Esfera, OI_Cilindro, OI_Adicion,
+            OI_Agudeza):
 
         try:
-            print("add")
-            engine = create_engine('mysql://nicor:1234@localhost:3306/mydb')
-            with engine.connect() as conn:
-                result = conn.execute(text("select 'hello world'"))
-                print(result.all())
-            
+            id = self.selectMaxId()
+            print(id)
+            query = "INSERT INTO teye VALUES(" + str(id+1) + ", NIF='" + nif + "', CONSULTA='" + fecha + "', OD_ESFERA=" + str(OD_Esfera) + ", OD_CILINDRO=" +  str(OD_Cilindro) + ", OD_ADICION=" +  str(OD_Adicion) + ", OD_AGUDEZA=" +  str(OD_Agudeza) + ", OI_ESFERA=" +  str(OI_Esfera) + ", OI_CILINDRO=" +  str(OI_Cilindro) + ", OI_ADICION=" +  str(OI_Adicion) + ", OI_AGUDEZA=" +  str(OI_Agudeza) + ");"
+            mydb = db(self.url)
+            mydb.execute(query)
+            self.view.update_refresh()
         except ValueError as error:
             # show an error message
             self.view.show_error(error)
@@ -54,16 +62,17 @@ class revisionController:
     def borrar(self, OD_Esfera, OD_Cilindro, OD_Adicion, OD_Agudeza, OI_Esfera, OI_Cilindro, OI_Adicion, OI_Agudeza):
 
         try:
-            2+2
+            2 + 2
 
         except ValueError as error:
             # show an error message
             self.view.show_error(error)
 
-    def actualizar(self, OD_Esfera, OD_Cilindro, OD_Adicion, OD_Agudeza, OI_Esfera, OI_Cilindro, OI_Adicion, OI_Agudeza):
+    def actualizar(self, OD_Esfera, OD_Cilindro, OD_Adicion, OD_Agudeza, OI_Esfera, OI_Cilindro, OI_Adicion,
+                   OI_Agudeza):
 
         try:
-            2+2
+            2 + 2
 
         except ValueError as error:
             # show an error message

@@ -20,7 +20,7 @@ class principalController:
                 view = revisionView(app)
                 view.grid(row=0, column=0, padx=10, pady=10)
 
-                model = tClient(nif, "Nico", "Alvarez", 20)
+                model = tClient(nif, "", "", null)
 
                 controller = revisionController(model, view)
 

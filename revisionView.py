@@ -161,9 +161,9 @@ class revisionView(tk.Frame):
         :return:
         """
         if self.controller:
-            self.controller.add(self.ODEsfera_var.get(), self.ODCilindro_var.get(), self.ODAdicion_var.get(),
-                                self.OIAgudeza_var, self.OIEsfera_var.get(), self.OICilindro_var.get(),
-                                self.OIAdicion_var.get(), self.OIAgudeza_var)
+            self.controller.add(self.controller.model.NIF , self.cal.get_date(), self.ODEsfera_var.get(), self.ODCilindro_var.get(), self.ODAdicion_var.get(),
+                                self.OIAgudeza_var.get(), self.OIEsfera_var.get(), self.OICilindro_var.get(),
+                                self.OIAdicion_var.get(), self.OIAgudeza_var.get())
 
     def actualizar_button_clicked(self):
         """
