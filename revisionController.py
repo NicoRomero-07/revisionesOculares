@@ -93,7 +93,6 @@ class revisionController:
             self.view.show_error(error)
 
     def limpiar(self):
-
         try:
             if len(self.view.dataGridFrame.tv.selection()) > 0:
                 self.view.dataGridFrame.tv.selection_remove(self.view.dataGridFrame.tv.selection()[0])
