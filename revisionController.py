@@ -40,10 +40,12 @@ class revisionController:
         rows = mydb.query(query)
         return rows[0]['COUNT(ID)']
 
+
     def add(self, nif, fecha, OD_Esfera, OD_Cilindro, OD_Adicion, OD_Agudeza, OI_Esfera, OI_Cilindro, OI_Adicion,
             OI_Agudeza):
 
         try:
+
             id = self.selectMaxId()
             print(id)
             print(str(fecha))
