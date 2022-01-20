@@ -77,6 +77,7 @@ class principalController:
 
     def limpiar(self):
         try:
+
             self.view.datagrid.my_table.selection_remove(self.view.datagrid.my_table.selection()[0])
             self.view.tNIF.delete("1.0", "end")
             self.view.tNombre.delete("1.0", "end")
