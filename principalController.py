@@ -3,7 +3,7 @@ from sqlalchemy import *
 from revisionView import revisionView
 from revisionController import revisionController
 from Modelo.tClient import tClient
-
+import tkinter as tk
 
 class principalController:
 
@@ -15,15 +15,17 @@ class principalController:
         try:
             if nif != "":
                 app.title('Revisiones Oculares')
-
-                view = revisionView(app, nif)
-                view.grid(row=0, column=0, padx=10, pady=10)
-
-                model = tClient(nif, "", "", null)
-
-                controller = revisionController(model, view)
-
-                view.set_controller(controller)
+                if len(self.view.datagrid.my_table.selection()) > 0:
+                    item = self.view.datagrid.my_table.selection()[0]
+                    row = self.view.datagrid.my_table.item(item)['values']
+                    nombre = row[1]
+                    apellidos = row[2]
+                    edad = row[3]
+                    view = revisionView(app, nif,nombre,apellidos,edad)
+                    view.grid(row=0, column=0, padx=10, pady=10)
+                    model = tClient(nif, "", "", null)
+                    controller = revisionController(model, view)
+                    view.set_controller(controller)
         except ValueError as error:
             # show an error message
             self.view.show_error(error)

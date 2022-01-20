@@ -5,14 +5,15 @@ from db import *
 
 
 class revisionView(tk.Frame):
-    def __init__(self, parent, nif):
+    def __init__(self, parent, nif,nombre,apellidos,edad):
         super().__init__(parent)
         self.parent = parent
         self.nif = nif
         # create widgets
         # label
-        self.label = tk.Label(self, text='Cliente')
-        self.label.grid(row=0, column=0, columnspan=6)
+        self.label = tk.Label(self, text= nif + ';' + nombre + ';' + apellidos + ';' + str(edad))
+        self.label.config(font=('Helvetica bold', 25))
+        self.label.grid(row=0, column=0, columnspan=50)
         self.label = tk.Label(self, text='OD_Esfera:')
         self.label.grid(row=2, column=0)
         self.label = tk.Label(self, text='OD_Cilindro:')

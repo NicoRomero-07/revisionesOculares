@@ -120,7 +120,6 @@ class principalView(ttk.Frame):
 
     def limpiar_button_clicked(self):
         if self.controller:
-            if len(self.datagrid.my_table.selection()) > 0:
                 self.controller.limpiar()
 
     def anyadir_button_clicked(self):
@@ -145,7 +144,11 @@ class principalView(ttk.Frame):
     def revisiones_button_clicked(self):
         try:
             if self.controller:
-                self.controller.revisiones(self.tNIF.get("0.0", "end-1c"), self.parent)
+                mydb = db()
+                query = "SELECT NIF FROM teye WHERE NIF ='" + self.tNIF.get("0.0", "end-1c") + "';"
+                rows = mydb.query(query)
+                if len(rows) > 0 and rows[0]['NIF'] != null:
+                    self.controller.revisiones(self.tNIF.get("0.0", "end-1c"), self.parent)
         except ValueError as error:
             # show an error message
             self.view.show_error(error)
