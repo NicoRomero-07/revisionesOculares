@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter.ttk import *
 from tkcalendar import Calendar
+from db import *
 
 
 class revisionView(tk.Frame):
@@ -70,53 +71,82 @@ class revisionView(tk.Frame):
         self.label = tk.Label(self, text='\n \n ')
         self.label.grid(row=6, column=2)
         # dataGrid
-        dataGridFrame = tk.Frame(self)
-        revision_scroll = Scrollbar(dataGridFrame, orient='horizontal')
+        self.dataGridFrame = tk.Frame(self)
+        revision_scroll = Scrollbar(self.dataGridFrame, orient='horizontal')
         revision_scroll.pack(side='bottom', fill='x')
-        tv = Treeview(dataGridFrame, xscrollcommand=revision_scroll.set)
-        tv.pack()
+        self.dataGridFrame.tv = Treeview(self.dataGridFrame, xscrollcommand=revision_scroll.set)
+        self.dataGridFrame.tv.pack()
 
-        dataGridFrame.grid(row=1, column=0, columnspan=5)
-        tv['columns'] = (
+        self.dataGridFrame.grid(row=1, column=0, columnspan=5)
+        self.dataGridFrame.tv['columns'] = (
             'revision_id', 'revision_nif', 'revision_consulta', 'revision_od_esfera', 'revision_od_cilindro',
             'revision_od_adicion', 'revision_od_agudeza'
             , 'revision_oi_esfera', 'revision_oi_cilindro', 'revision_oi_adicion', 'revision_oi_agudeza')
 
-        revision_scroll.config(command=tv.xview)
-        tv.heading("#0", text="", anchor='center')
-        tv.column("#0", anchor='center', width=1)
-        tv.heading("revision_id", text="Id")
-        tv.column("revision_id", anchor='center', width=100)
-        tv.heading("revision_nif", text="NIF", anchor='center')
-        tv.column("revision_nif", anchor='center', width=100)
-        tv.heading("revision_consulta", text="Consulta", anchor='center')
-        tv.column("revision_consulta", anchor='center', width=100)
-        tv.heading("revision_od_esfera", text="OD_Esfera", anchor='center')
-        tv.column("revision_od_esfera", anchor='center', width=100)
-        tv.heading("revision_od_cilindro", text="OD_Cilindro", anchor='center')
-        tv.column("revision_od_cilindro", anchor='center', width=100)
-        tv.heading("revision_od_adicion", text="OD_Adicion", anchor='center')
-        tv.column("revision_od_adicion", anchor='center', width=100)
-        tv.heading("revision_od_agudeza", text="OD_Agudeza", anchor='center')
-        tv.column("revision_od_agudeza", anchor='center', width=100)
-        tv.heading("revision_oi_esfera", text="OI_Esfera", anchor='center')
-        tv.column("revision_oi_esfera", anchor='center', width=100)
-        tv.heading("revision_oi_cilindro", text="OI_Cilindro", anchor='center')
-        tv.column("revision_oi_cilindro", anchor='center', width=100)
-        tv.heading("revision_oi_adicion", text="OI_Adicion", anchor='center')
-        tv.column("revision_oi_adicion", anchor='center', width=100)
-        tv.heading("revision_oi_agudeza", text="OI_Agudeza", anchor='center')
-        tv.column("revision_oi_agudeza", anchor='center', width=100)
+        revision_scroll.config(command=self.dataGridFrame.tv.xview)
+        self.dataGridFrame.tv.heading("#0", text="", anchor='center')
+        self.dataGridFrame.tv.column("#0", anchor='center', width=1)
+        self.dataGridFrame.tv.heading("revision_id", text="Id")
+        self.dataGridFrame.tv.column("revision_id", anchor='center', width=100)
+        self.dataGridFrame.tv.heading("revision_nif", text="NIF", anchor='center')
+        self.dataGridFrame.tv.column("revision_nif", anchor='center', width=100)
+        self.dataGridFrame.tv.heading("revision_consulta", text="Consulta", anchor='center')
+        self.dataGridFrame.tv.column("revision_consulta", anchor='center', width=100)
+        self.dataGridFrame.tv.heading("revision_od_esfera", text="OD_Esfera", anchor='center')
+        self.dataGridFrame.tv.column("revision_od_esfera", anchor='center', width=100)
+        self.dataGridFrame.tv.heading("revision_od_cilindro", text="OD_Cilindro", anchor='center')
+        self.dataGridFrame.tv.column("revision_od_cilindro", anchor='center', width=100)
+        self.dataGridFrame.tv.heading("revision_od_adicion", text="OD_Adicion", anchor='center')
+        self.dataGridFrame.tv.column("revision_od_adicion", anchor='center', width=100)
+        self.dataGridFrame.tv.heading("revision_od_agudeza", text="OD_Agudeza", anchor='center')
+        self.dataGridFrame.tv.column("revision_od_agudeza", anchor='center', width=100)
+        self.dataGridFrame.tv.heading("revision_oi_esfera", text="OI_Esfera", anchor='center')
+        self.dataGridFrame.tv.column("revision_oi_esfera", anchor='center', width=100)
+        self.dataGridFrame.tv.heading("revision_oi_cilindro", text="OI_Cilindro", anchor='center')
+        self.dataGridFrame.tv.column("revision_oi_cilindro", anchor='center', width=100)
+        self.dataGridFrame.tv.heading("revision_oi_adicion", text="OI_Adicion", anchor='center')
+        self.dataGridFrame.tv.column("revision_oi_adicion", anchor='center', width=100)
+        self.dataGridFrame.tv.heading("revision_oi_agudeza", text="OI_Agudeza", anchor='center')
+        self.dataGridFrame.tv.column("revision_oi_agudeza", anchor='center', width=100)
+
 
         # Calendario
+        self.selected_date = tk.StringVar()
+
         self.cal = Calendar(self, selectmode='day',
                             year=2020, month=5,
-                            day=22)
+                            day=22, textvariable= self.selected_date)
         self.cal.grid(row=7, column=0, columnspan=2, rowspan=2)
 
+        self.update_refresh()
+
+        self.dataGridFrame.tv.bind("<<TreeviewSelect>>", self.selection_changed)
         # set the controller
         self.controller = None
 
+
+    def selection_changed(self, x):
+        if self.controller:
+            if len(self.dataGridFrame.tv.selection()) > 0:
+                item = self.dataGridFrame.tv.selection()[0]
+                row = self.dataGridFrame.tv.item(item)['values']
+                self.controller.selection_changed(row)
+
+    def update_refresh(self):
+        # url = 'mysql+pymysql://root:nicolaszhiliezhao@localhost:3306/mydb'
+        url = 'mysql://root:1234@localhost:3306/mydb'
+        mydb = db(url)
+        query = "SELECT * FROM teye"
+        rows = mydb.query(query)
+        self.update_datagrid(rows)
+
+    def update_datagrid(self, rows):
+        for i in self.dataGridFrame.tv.get_children():
+            self.dataGridFrame.tv.delete(i)
+        for i in rows:
+            self.dataGridFrame.tv.insert('', 'end', values=(i['ID'], i['NIF'], i['CONSULTA'], i['OD_ESFERA'],
+                                                            i['OD_CILINDRO'],i['OD_ADICION'],i['OD_AGUDEZA'],
+                                                            i['OI_ESFERA'],i['OI_CILINDRO'],i['OI_ADICION'],i['OI_AGUDEZA']))
     def set_controller(self, controller):
         """
         Set the controller
