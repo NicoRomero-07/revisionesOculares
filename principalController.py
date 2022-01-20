@@ -7,8 +7,7 @@ import tkinter as tk
 
 class principalController:
 
-    def __init__(self, model, view):
-        self.model = model
+    def __init__(self, view):
         self.view = view
 
     def revisiones(self, nif, app):
@@ -23,8 +22,7 @@ class principalController:
                     edad = row[3]
                     view = revisionView(app, nif,nombre,apellidos,edad)
                     view.grid(row=0, column=0, padx=10, pady=10)
-                    model = tClient(nif, "", "", null)
-                    controller = revisionController(model, view)
+                    controller = revisionController(view)
                     view.set_controller(controller)
         except ValueError as error:
             # show an error message

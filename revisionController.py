@@ -11,8 +11,8 @@ from db import db
 
 
 class revisionController:
-    def __init__(self, model, view):
-        self.model = model
+    def __init__(self, view):
+
         self.view = view
 
     def selection_changed(self, row):
@@ -116,11 +116,9 @@ class revisionController:
             app.title('Revisiones Oculares')
 
             view = pV.principalView(app)
-            view.grid(row=0, column=0, padx=10, pady=10)
+            view.grid(row=0, column=0, padx=10, pady=10) 
 
-            model = tClient(1, "Nico", "Alvarez", 20)
-
-            controller = pC.principalController(model, view)
+            controller = pC.principalController(view)
             view.set_controller(controller)
         except ValueError as error:
             # show an error message
