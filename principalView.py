@@ -87,6 +87,7 @@ class principalView(ttk.Frame):
         self.datagrid.my_table.heading("EDAD", text="EDAD", anchor="center")
         # Event
         self.datagrid.my_table.bind("<<TreeviewSelect>>", self.selection_changed)
+
         self.update_refresh()
 
         self.controller = None
