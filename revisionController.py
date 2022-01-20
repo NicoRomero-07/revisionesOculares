@@ -18,9 +18,7 @@ class revisionController:
 
     def selection_changed(self, row):
         formato = format(row[2])
-        print(str(row[2]))
-        print(formato)
-        print(datetime.strptime(str(row[2]), '%Y-%m-%d'))
+
         self.view.cal.selection_set(datetime.strptime(str(row[2]), '%Y-%m-%d'))
         self.view.ODEsfera_entry.delete(0, 'end')
         self.view.ODEsfera_entry.insert(0, row[3])
@@ -43,15 +41,25 @@ class revisionController:
         query = "SELECT MAX(ID) FROM teye"
         mydb = db(self.url)
         rows = mydb.query(query)
+        if len(rows) == 0:
+            return 0
+
         return rows[0]['MAX(ID)']
 
     def add(self, nif, fecha, OD_Esfera, OD_Cilindro, OD_Adicion, OD_Agudeza, OI_Esfera, OI_Cilindro, OI_Adicion,
             OI_Agudeza):
 
         try:
-            id = self.selectMaxId()
-            print(id)
-            query = "INSERT INTO teye VALUES(" + str(id+1) + ", NIF='" + nif + "', CONSULTA='" + fecha + "', OD_ESFERA=" + str(OD_Esfera) + ", OD_CILINDRO=" +  str(OD_Cilindro) + ", OD_ADICION=" +  str(OD_Adicion) + ", OD_AGUDEZA=" +  str(OD_Agudeza) + ", OI_ESFERA=" +  str(OI_Esfera) + ", OI_CILINDRO=" +  str(OI_Cilindro) + ", OI_ADICION=" +  str(OI_Adicion) + ", OI_AGUDEZA=" +  str(OI_Agudeza) + ");"
+            id = self.selectMaxId() + 1
+            format = '%m/%d/%y'
+            new_format = '%Y-%m-%d'
+            fecha = datetime.strptime(fecha, format).strftime(new_format)
+            print(fecha)
+            query = "INSERT INTO teye VALUES(ID = " + str(id) + ", NIF='" + nif + "', CONSULTA='" + str(
+                fecha) + "', OD_ESFERA=" + str(OD_Esfera) + ", OD_CILINDRO=" + str(OD_Cilindro) + ", OD_ADICION=" + str(
+                OD_Adicion) + ", OD_AGUDEZA=" + str(OD_Agudeza) + ", OI_ESFERA=" + str(
+                OI_Esfera) + ", OI_CILINDRO=" + str(OI_Cilindro) + ", OI_ADICION=" + str(
+                OI_Adicion) + ", OI_AGUDEZA=" + str(OI_Agudeza) + "); "
             mydb = db(self.url)
             mydb.execute(query)
             self.view.update_refresh()
