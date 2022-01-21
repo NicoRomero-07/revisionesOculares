@@ -40,16 +40,17 @@ class revisionController:
         rows = mydb.query(query)
         return rows[0]['COUNT(ID)']
 
-
     def add(self, nif, fecha, OD_Esfera, OD_Cilindro, OD_Adicion, OD_Agudeza, OI_Esfera, OI_Cilindro, OI_Adicion,
             OI_Agudeza):
 
         try:
 
             id = self.selectMaxId()
-            print(id)
-            print(str(fecha))
-            query = "INSERT INTO teye  (`ID`, `NIF`, `CONSULTA`, `OD_ESFERA`, `OD_CILINDRO`, `OD_ADICION`, `OD_AGUDEZA`, `OI_ESFERA`, `OI_CILINDRO`, `OI_ADICION`, `OI_AGUDEZA`) VALUES("+ str(id + 1) + ",'" + nif + "', '" + str(fecha) + "', " + str(OD_Esfera)  +", "+ str(OD_Cilindro) +", "+  str(OD_Adicion) + ", "+ str(OD_Agudeza) + ", " + str(OI_Esfera) + ", " + str(OI_Cilindro) + ", " + str( OI_Adicion) + ", " + str(OI_Agudeza) +");"
+            query = "INSERT INTO teye  (`ID`, `NIF`, `CONSULTA`, `OD_ESFERA`, `OD_CILINDRO`, `OD_ADICION`, " \
+                    "`OD_AGUDEZA`, `OI_ESFERA`, `OI_CILINDRO`, `OI_ADICION`, `OI_AGUDEZA`) VALUES(" + str(
+                id + 1) + ",'" + nif + "', '" + str(fecha) + "', " + str(OD_Esfera) + ", " + str(
+                OD_Cilindro) + ", " + str(OD_Adicion) + ", " + str(OD_Agudeza) + ", " + str(OI_Esfera) + ", " + str(
+                OI_Cilindro) + ", " + str(OI_Adicion) + ", " + str(OI_Agudeza) + ");"
             mydb = db()
             mydb.execute(query)
             self.view.update_refresh()
@@ -82,7 +83,11 @@ class revisionController:
                 item = self.view.dataGridFrame.tv.selection()[0]
                 row = self.view.dataGridFrame.tv.item(item)['values']
                 cellValue = row[0]
-            query = "UPDATE teye SET  CONSULTA='" + str(Consulta) + "', OD_ESFERA=" + str(OD_Esfera) + ", OD_CILINDRO=" + str(OD_Cilindro) + ", OD_ADICION="+str(OD_Adicion) +", OD_Agudeza="+str(OD_Agudeza)+", OI_ESFERA=" + str(OI_Esfera) + ", OI_CILINDRO=" + str(OI_Cilindro) + ", OI_ADICION="+str(OI_Adicion) +" ,OI_Agudeza="+str(OI_Agudeza)+" WHERE ID = '" + str(cellValue) + "';"
+            query = "UPDATE teye SET  CONSULTA='" + str(Consulta) + "', OD_ESFERA=" + str(
+                OD_Esfera) + ", OD_CILINDRO=" + str(OD_Cilindro) + ", OD_ADICION=" + str(
+                OD_Adicion) + ", OD_Agudeza=" + str(OD_Agudeza) + ", OI_ESFERA=" + str(
+                OI_Esfera) + ", OI_CILINDRO=" + str(OI_Cilindro) + ", OI_ADICION=" + str(
+                OI_Adicion) + " ,OI_Agudeza=" + str(OI_Agudeza) + " WHERE ID = '" + str(cellValue) + "';"
             mydb = db()
             mydb.execute(query)
             self.view.update_refresh()
@@ -116,7 +121,7 @@ class revisionController:
             app.title('Revisiones Oculares')
 
             view = pV.principalView(app)
-            view.grid(row=0, column=0, padx=10, pady=10) 
+            view.grid(row=0, column=0, padx=10, pady=10)
 
             controller = pC.principalController(view)
             view.set_controller(controller)

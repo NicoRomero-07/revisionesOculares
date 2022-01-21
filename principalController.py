@@ -5,6 +5,7 @@ from revisionController import revisionController
 from Modelo.tClient import tClient
 import tkinter as tk
 
+
 class principalController:
 
     def __init__(self, view):
@@ -20,7 +21,7 @@ class principalController:
                     nombre = row[1]
                     apellidos = row[2]
                     edad = row[3]
-                    view = revisionView(app, nif,nombre,apellidos,edad)
+                    view = revisionView(app, nif, nombre, apellidos, edad)
                     view.grid(row=0, column=0, padx=10, pady=10)
                     controller = revisionController(view)
                     view.set_controller(controller)
@@ -30,7 +31,8 @@ class principalController:
 
     def anyadir(self, nif, nombre, apellidos, edad):
         try:
-            query = "INSERT INTO tclient VALUES('" + nif + "', '" + nombre + "', '" + apellidos + "', " + str(edad) + ");"
+            query = "INSERT INTO tclient VALUES('" + nif + "', '" + nombre + "', '" + apellidos + \
+                    "', " + str(edad) + ");"
             mydb = db()
             mydb.execute(query)
             self.view.update_refresh()
@@ -52,7 +54,8 @@ class principalController:
 
     def actualizar(self, nif, nombre, apellidos, edad):
         try:
-            query = "UPDATE tclient SET NIF='" + nif + "', NOMBRE='" + nombre + "', APELLIDOS='" + apellidos + "', EDAD=" + str(
+            query = "UPDATE tclient SET NIF='" + nif + "', NOMBRE='" + nombre + \
+                    "', APELLIDOS='" + apellidos + "', EDAD=" + str(
                 edad) + " WHERE NIF = '" + nif + "';"
             mydb = db()
             mydb.execute(query)
