@@ -5,13 +5,13 @@ from db import *
 
 
 class revisionView(tk.Frame):
-    def __init__(self, parent, nif,nombre,apellidos,edad):
+    def __init__(self, parent, nif, nombre, apellidos, edad):
         super().__init__(parent)
         self.parent = parent
         self.nif = nif
         # create widgets
         # label
-        self.label = tk.Label(self, text= nif + ';' + nombre + ';' + apellidos + ';' + str(edad))
+        self.label = tk.Label(self, text=nif + ';' + nombre + ';' + apellidos + ';' + str(edad))
         self.label.config(font=('Helvetica bold', 25))
         self.label.grid(row=0, column=0, columnspan=50)
         self.label = tk.Label(self, text='OD_Esfera:')
@@ -111,13 +111,12 @@ class revisionView(tk.Frame):
         self.dataGridFrame.tv.heading("revision_oi_agudeza", text="OI_Agudeza", anchor='center')
         self.dataGridFrame.tv.column("revision_oi_agudeza", anchor='center', width=100)
 
-
         # Calendario
         self.selected_date = tk.StringVar()
 
         self.cal = Calendar(self, selectmode='day',
                             year=2020, month=5,
-                            day=22, textvariable= self.selected_date)
+                            day=22, textvariable=self.selected_date)
         self.cal.grid(row=7, column=0, columnspan=2, rowspan=2)
 
         self.update_refresh()
@@ -125,7 +124,6 @@ class revisionView(tk.Frame):
         self.dataGridFrame.tv.bind("<<TreeviewSelect>>", self.selection_changed)
         # set the controller
         self.controller = None
-
 
     def selection_changed(self, x):
         if self.controller:
@@ -136,7 +134,7 @@ class revisionView(tk.Frame):
 
     def update_refresh(self):
         mydb = db()
-        query = "SELECT * FROM teye WHERE NIF = '"+self.nif+"';"
+        query = "SELECT * FROM teye WHERE NIF = '" + self.nif + "';"
         rows = mydb.query(query)
         self.update_datagrid(rows)
 
@@ -145,8 +143,10 @@ class revisionView(tk.Frame):
             self.dataGridFrame.tv.delete(i)
         for i in rows:
             self.dataGridFrame.tv.insert('', 'end', values=(i['ID'], i['NIF'], i['CONSULTA'], i['OD_ESFERA'],
-                                                            i['OD_CILINDRO'],i['OD_ADICION'],i['OD_AGUDEZA'],
-                                                            i['OI_ESFERA'],i['OI_CILINDRO'],i['OI_ADICION'],i['OI_AGUDEZA']))
+                                                            i['OD_CILINDRO'], i['OD_ADICION'], i['OD_AGUDEZA'],
+                                                            i['OI_ESFERA'], i['OI_CILINDRO'], i['OI_ADICION'],
+                                                            i['OI_AGUDEZA']))
+
     def set_controller(self, controller):
         """
         Set the controller
@@ -161,7 +161,8 @@ class revisionView(tk.Frame):
         :return:
         """
         if self.controller:
-            self.controller.add(self.nif, self.cal.selection_get(), self.ODEsfera_var.get(), self.ODCilindro_var.get(), self.ODAdicion_var.get(),
+            self.controller.add(self.nif, self.cal.selection_get(), self.ODEsfera_var.get(), self.ODCilindro_var.get(),
+                                self.ODAdicion_var.get(),
                                 self.OIAgudeza_var.get(), self.OIEsfera_var.get(), self.OICilindro_var.get(),
                                 self.OIAdicion_var.get(), self.OIAgudeza_var.get())
 
@@ -171,7 +172,8 @@ class revisionView(tk.Frame):
         :return:
         """
         if self.controller:
-            self.controller.actualizar(self.cal.selection_get(), self.ODEsfera_var.get(), self.ODCilindro_var.get(), self.ODAdicion_var.get(),
+            self.controller.actualizar(self.cal.selection_get(), self.ODEsfera_var.get(), self.ODCilindro_var.get(),
+                                       self.ODAdicion_var.get(),
                                        self.OIAgudeza_var.get(), self.OIEsfera_var.get(), self.OICilindro_var.get(),
                                        self.OIAdicion_var.get(), self.OIAgudeza_var.get())
 
