@@ -11,7 +11,7 @@ class revisionView(tk.Frame):
         self.nif = nif
         # create widgets
         # label
-        self.label = tk.Label(self, text=nif + ';' + nombre + ';' + apellidos + ';' + str(edad))
+        self.label = tk.Label(self, text=nif + ';' + str(nombre) + ';' + str(apellidos) + ';' + str(edad))
         self.label.config(font=('Helvetica bold', 25))
         self.label.grid(row=0, column=0, columnspan=50)
         self.label = tk.Label(self, text='OD_Esfera:')
